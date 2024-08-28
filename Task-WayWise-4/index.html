@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WayWise: Rev Up Your Journey with Unmatched Car Rental Services!</title>
+    <meta name="description"
+        content="Explore WayWise for unparalleled car rental services! Rent a car seamlessly, whether for daily commutes or road trips. Our wide range of vehicles ensures you find the perfect match for your travel needs. Trust WayWise for a hassle-free rental experience and rev up your journey today!">
+    <script src="https://kit.fontawesome.com/60d8b723d0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon">
+    <link rel="stylesheet" href="assets/css/style1.css">
+    <script src="assets/script/script.js"></script>
+    <script src="assets/script/cookie-consent.js"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        .input-group_ {
+            gap: 0;
+        }
+
+        input[type="text"] {
+            border: none;
+            padding-top: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Remove the focus outline */
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="date"] {
+            appearance: none;
+            /* Remove default styling in modern browsers */
+            -webkit-appearance: none;
+            /* Remove default styling in Safari */
+            -moz-appearance: none;
+            /* Remove default styling in Firefox */
+            border: none;
+            padding-top: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Remove the focus outline */
+        input[type="date"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .cookie-header_ {
+            display: flex;
+            align-items: center;
+        }
+
+        .cookie-content_ {
+            font-size: 15px;
+            margin: 10px 0px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cookieConsent">
+        <div class="cookie-header_">
+            <span style="margin-right: 10px;" class="material-symbols-outlined">
+                cookie
+            </span>
+            <h2 style="margin: 0;">Cookie Settings</h2>
+        </div>
+        <div class="cookie-content_">
+            WayWise.co.uk uses cookies to enhance your experience. By using our website, you consent to our use of
+            cookies. For more details, please review our <a href="/privacy-policy">Privacy Policy</a>.
+        </div>
+        <button id="acceptCookie">Accept</button>
+    </div>
+
+    <header>
+        <a href="https://waywise.co.uk">
+            <div class="logo">
+                <img src="assets/img/waywise.png" alt="">
+            </div>
+        </a>
+
+        <div class="hold-right">
+            <button class="headtab">
+                <a href="car-details.html">
+                    <span class="material-symbols-outlined">
+                        add_circle
+                    </span>
+                    <p class="no-dec">Host a ride</p>
+                </a>
+            </button>
+
+            <button class="profile-hdr">
+                <span class="material-symbols-outlined">
+                    chat
+                </span>
+                <p>Messages</p>
+            </button>
+
+            <div class="dropdown">
+                <a onclick="myFunction()">
+                    <button class="profile-hdr">
+                        <span class="material-symbols-outlined">
+                            account_circle
+                        </span>
+                        Sign In
+                        <span class="material-symbols-outlined">
+                            expand_more
+                        </span>
+                    </button>
+                </a>
+
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#home">
+                        <span class="material-symbols-outlined">
+                            dashboard
+                        </span>
+                        Dashboard
+                    </a>
+                    <a href="#home">
+                        <span class="material-symbols-outlined">
+                            account_balance
+                        </span>
+                        Payments
+                    </a>
+                    <a href="#home">
+                        <span class="material-symbols-outlined">
+                            Settings
+                        </span>
+                        Settings
+                    </a>
+                    <a href="#home">
+                        <span class="material-symbols-outlined">
+                            support_agent
+                        </span>
+                        Contact Us
+                    </a>
+                    <a href="logout.php">
+                        <span class="material-symbols-outlined">
+                            logout
+                        </span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <span class="material-symbols-outlined">
+                menu
+            </span>
+        </button>
+    </header>
+
+    <nav id="mobileMenu" class="mobile-menu">
+        <a href="car-details.html">
+            <span class="material-symbols-outlined">add_circle</span>
+            Host a ride
+        </a>
+        <a href="#">
+            <span class="material-symbols-outlined">chat</span>
+            Messages
+        </a>
+        <a href="#home">
+            <span class="material-symbols-outlined">dashboard</span>
+            Dashboard
+        </a>
+        <a href="#home">
+            <span class="material-symbols-outlined">account_balance</span>
+            Payments
+        </a>
+        <a href="#home">
+            <span class="material-symbols-outlined">settings</span>
+            Settings
+        </a>
+        <a href="#home">
+            <span class="material-symbols-outlined">support_agent</span>
+            Contact Us
+        </a>
+        <a href="logout.php">
+            <span class="material-symbols-outlined">logout</span>
+            Sign Out
+        </a>
+    </nav>
+
+
+
+
+
+
+    <!-- Hero Image -->
+    <div class="hero-img">
+        <div class="hero-tx">
+
+            <h1>Rent a car from trusted host<br> with WayWise!!</h1>
+            <center style="height: auto;">
+                <div class="hero-cnt">
+                    <form action="#">
+                        <div align="left" class="input-group_">
+                            <div align="left" class="input-row">
+                                <label for="date1" class="input-title"
+                                style="background-color: transparent !important; margin-left: 2px;"><span style="font-size: 20px;" class="material-symbols-outlined">
+                                    near_me
+                                    </span>Location</label>
+                                <input id="city" class="t4" type="location" >
+                            </div>
+                        </div>
+
+                        <div align="left" class="input-group_">
+                            <div align="left" class="input-row">
+                                <label for="from-date" class="input-title" style="background-color: transparent !important; margin-left: 2px;"><span style="font-size: 20px;" class="material-symbols-outlined">
+                                    date_range
+                                    </span>Pickup</label>
+                                <input style="  border: 1px solid black;
+                                border-radius: 10px;" type="text" id="from-date" class="date-input">
+                            </div>
+                        </div>
+                    
+                        <div align="left" class="input-group_">
+                            <div align="left" class="input-row">
+                                <label for="from-date" class="input-title" style="background-color: transparent !important; margin-left: 2px;"><span style="font-size: 20px;" class="material-symbols-outlined">
+                                    date_range
+                                    </span>Return</label>
+                                <input style="  border: 1px solid black;
+                                border-radius: 10px;" type="text" id="to-date" class="date-input">
+                            </div>
+                        </div>
+
+                        <button class="t2" >Search
+           
+                        </button>
+                    </form>
+                </div>
+
+
+            </center>
+        </div>
+    </div>
+
+    <!------hero divends -->
+
+    <!-------second div hero2-->
+
+    <div class="hero2">
+        <div class="h2-txt">
+            <h2>Your ride is just two clicks away</h2>
+            <br>
+            <p> Click 1: hit search once you enter City you are in, Date you will take and return the car.</p>
+
+            <br>
+            <br>
+            <p>Click 2: Click the Book button when you have selected your ride from the number of options.</p>
+
+            <br>
+            <br>
+            <br>
+            <h3>Cheers 🍻! Now board your ride, sit back, and rock the rest of your journey.</h3>
+        </div>
+    </div>
+
+    <div class="hero3">
+        <br><br><br><br>
+        <div class="h3-txt">
+            <h2>Turn your car into extra income! List your vehicle on WayWise and start earning effortlessly.</h2>
+
+
+            <button class="cta-btn"> <a href="car-details.php"> Host your car <span class="material-symbols-outlined">
+                        arrow_forward
+                    </span> </a></button>
+
+        </div>
+
+    </div>
+
+    <footer>
+
+
+
+        <div class="footer">
+            <div class="footer1">
+                <a href="#">About Us</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Cookies Setting</a>
+            </div>
+
+            <div class="footer2">
+                <h2>Social Links</h2>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/waywiseuk/" target="_blank"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/waywiseuk/" target="_blank"><i
+                            class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+
+            <div class="footer3">
+
+                <h2>Need Help?</h2>
+                <div class="nhp">
+                    <a href="#">Customer Support</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">Report abuse</a>
+                    <a href="#">Feedback</a>
+                </div>
+            </div>
+
+        </div>
+
+        <center>
+            <div class="footer4">
+
+                <div class="footer-logo">
+                    <img src="assets/img/dark-logo.png" alt="">
+                </div>
+                <div class="love_div">
+
+
+                    © 2024 WayWise. All rights reserved, Built with 🧡 in United Kingdom
+                </div>
+
+            </div>
+        </center>
+    </footer>
+
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        function toggleMenu() {
+            document.getElementById("mobileMenu").classList.toggle("show-menu");
+        }
+    </script>
+    <script src="./assets/script/cookie-consent.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS7u02HebXDVyM1xNx4YTTlp1yrSI9GrI&libraries=places&callback=initAutocomplete" async defer></script>
+<script>
+    let autocomplete;
+
+    function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('city'),
+            { types: ['geocode'], componentRestrictions: { country: 'uk' } }
+        );
+
+        autocomplete.setFields(['address_component', 'geometry', 'formatted_address']);
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+            console.error("No details available for input: '" + place.name + "'");
+            return;
+        }
+
+        const address = place.formatted_address;
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+
+        console.log("Selected address:", address);
+        console.log("Latitude:", lat);
+        console.log("Longitude:", lng);
+
+        // Update the input field with the formatted address
+        document.getElementById('city').value = address;
+    }
+
+
+
+    // date 
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const fromDateInput = document.getElementById('from-date');
+    const toDateInput = document.getElementById('to-date');
+
+    flatpickr(fromDateInput, {
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            toDateInput._flatpickr.set('minDate', dateStr);
+        }
+    });
+
+    flatpickr(toDateInput, {
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            fromDateInput._flatpickr.set('maxDate', dateStr);
+        }
+    });
+});
+
+
+
+
+</script>
+
+</body>
+
+</html>

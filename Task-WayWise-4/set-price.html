@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set price for your car - WayWise</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://kit.fontawesome.com/60d8b723d0.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="assets/img/fevicon.png">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+      
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #dropdown {
+            /* display: none; */
+            flex-direction: column;
+            align-items: baseline;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: white;
+            /* position: absolute; */
+            /* z-index: 1; */
+        }
+        .progress-stage {
+  width: 25%; /* Adjust width as needed */
+  height: 100%;
+  background-color: black;
+  /* border-radius: 5px; */
+}
+
+        .dropdown-container {
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+        }
+
+        .dropdown-button {
+            padding: 10px;
+            background-color: white;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        .mb-no {
+            margin-bottom: 0;
+        }
+
+        @media screen and (max-width: 550px) {
+            .adonsc {
+                padding: 30px 10px !important;
+                border: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--------------header ends here-->
+    <!-------Host form-->
+    <div class="form-i">
+        <center>
+            <form action="">
+                <div class="adonsc"
+                    style="justify-content: start; max-width: 900px; background-color: white; color: black;">
+                    <h2 align="left">Set Price and borrowers info</h2>
+                    <p align="left" class="steps_line">3 of 6 steps | Next: Upload Photos</p>
+                    <div class="progress-bar" style="height: 15px;">
+                        <div class="progress-stage"></div>
+                        <div class="progress-stage progress-stage--rounded"></div>
+                    </div>
+                    <p class="light-grey" align="left" style="margin: 0; margin-bottom: 40px;">Please set the price and
+                        deposit that you wants to receive when listing your car on WayWise.</p>
+                    <div class="input-group inc" style="gap: 0; justify-content: space-between;">
+                        <p align="left">What deposit amount would you like WayWise to hold when renting out your car to
+                            someone? </p>
+                        <div class="inp">
+                            <label style="height: fit-content;" class="input-title" for="deposit">£</label>
+                            <input type="tel" name="deposit" class="hostlc"
+                                style="color: black;  width: 90px;" id="deposit">
+                        </div>
+                    </div>
+                    <div class="input-group inc" style="gap: 0; justify-content: space-between;">
+                        <p align="left">Price? (WayWise will charge 10% of the total as a platform fee.) </p>
+                        <div style="display: flex; position: relative;">
+                            <label class="input-title" for="deposit">£</label>
+                            <input type="tel"
+                                style="color: black; width: 50px; padding-right: 60px; text-align: right;"
+                                name="deposit" class="hostlc" id="deposit">
+                            <label style="padding-left: 10px; padding-right: 10px;" class="input-title"
+                                for="deposit">/Day</label>
+                        </div>
+                    </div>
+                    <div class="input-group inc" style="gap: 0; justify-content: space-between;">
+                        <p align="left">Fuel included? </p>
+                        <select class="hostlc" name="trans" id="transmission"
+                            style="background-color: white; height: auto;">
+                            <option value="automatic">Yes</option>
+                            <option value="manual">No</option>
+                        </select>
+                    </div>
+                    <div class="input-group inc" style="gap: 0; justify-content: space-between;">
+                        <p align="left">Minimum driver's age? </p>
+                        <select class="hostlc" name="trans" id="transmission"
+                            style="background-color: white; height: auto;">
+                            <option value="automatic">18+</option>
+                            <option value="automatic">19+</option>
+                            <option value="automatic">20+</option>
+                            <option value="automatic">21+</option>
+                            <option value="automatic">23+</option>
+                            <option value="automatic">24+</option>
+                            <option value="automatic">25+</option>
+                            <option value="automatic">26+</option>
+                            <option value="automatic">27+</option>
+                        </select>
+                    </div>
+                    <div class="input-group inc"
+                        style="gap: 0; justify-content: space-between; margin-top: 40px; margin-bottom: 40px; flex-direction: row; text-align: left;">
+                        <label for="agreeCheckbox">I can do drop-off and pick-up to specific locations such as
+                            Airports or Train stations? (Optional)
+                        </label> <input type="checkbox" id="agreeCheckbox" onclick="check_drop_toggle()">
+
+
+                    </div>
+                    <div class="dropdown-container" style="display: none;" id="check_drop">
+                        <button class="dropdown-button" onclick="toggleDropdown(event)"
+                            style="margin-bottom: 30px; align-items: center; justify-content: center; display: flex;">Select
+                            Options<svg width="60px" height="30px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0" fill="none" width="24" height="24" />
+                                <g>
+                                    <path d="M7 10l5 5 5-5" />
+                                </g>
+                            </svg></button>
+                        <div id="dropdown" style="display: none;">
+                           
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">London Heathrow Airport</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lgw" name="lgw">
+                                <label for="location2">London Gatwick Airport</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">Kings Cross Station (London)</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">Waterloo station</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">London Stansted Airport</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">Leeds Bradford Airport</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">Edinburgh Airport</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="lhr" name="lhr">
+                                <label for="location1">Manchester Airport</label>
+                            </div>
+                            <!-- Add more options as needed -->
+                        </div>
+                    </div>
+                    <button class="go-ahead" onclick="showLoader()">
+                        <a href="#">Save & Continue</a>
+                        <div class="loader" id="loader"></div>
+                    </button>
+                </div>
+            </form>
+        </center>
+    </div>
+    <script>
+        function showLoader() {
+            document.getElementById("loader").classList.add("active");
+            setTimeout(function () {
+                document.getElementById("loader").classList.remove("active");
+            }, 500000); // 5000 milliseconds = 5 seconds
+        }
+
+        function check_drop_toggle() {
+            var dropdown = document.getElementById('check_drop');
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'flex';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function toggleDropdown(event) {
+            event.preventDefault(); // Prevent the default behavior of the button click event
+            var dropdown = document.getElementById('dropdown');
+            var dropdownButton = document.querySelector('.dropdown-button');
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'flex';
+                dropdownButton.style.marginBottom = '0px';
+            } else {
+                dropdown.style.display = 'none';
+                dropdownButton.style.marginBottom = '30px';
+            }
+        }
+
+        function checkAll(checkAllBox) {
+            var checkboxes = document.querySelectorAll('#dropdown input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox !== checkAllBox) {
+                    checkbox.checked = checkAllBox.checked;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

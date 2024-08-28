@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="assets/script/script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/img/fevicon.png">
+    <title>SignIn - WayWise</title>
+    <meta name="description" content="WayWise UK. SignIn to your account and lets keep on moving!">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://kit.fontawesome.com/60d8b723d0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        @media screen and (max-width: 550px) {
+            .signin-form {
+                padding-left: 30px !important;
+                padding-right: 30px !important;
+                border-radius: 0px !important;
+                height: 100vh !important;
+            }
+
+            .signup-pg {
+                align-items: end !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <?php include 'assets/php/header.php';?>
+
+    <!--------------header ends here-->
+
+
+    <!--------signin form -->
+
+    <div class="signup-pg">
+
+
+        <div class="signin-form">
+
+            <form class="r-form" action="signin.php" method="post">
+
+                <h2>Back on board? Log in and let's keep moving!</h2>
+
+
+                <p style="color: red;"></p>
+
+                <div align="left" class="input-group">
+                    <div align="left" class="input-row">
+                        <label for="email">E-mail</label>
+                        <input id="ip3" name="email" type="email" >
+                    </div>
+                </div>
+                <div align="left" class="input-row" style="margin-top: 20px;">
+                    <label for="make">Password</label>
+                    <input id="ip3" name="password" type="password">
+                </div>
+
+                <br>
+                <p class="tca"> <a href="#">Forgot Password?</a></p>
+
+                <p class="tca">Not a member yet? <a href="signup.php">Sign Up</a></p>
+
+                <input id="ip4" type="submit" value="Continue">
+                <br>
+            </form>
+        </div>
+    </div>
+
+
+
+    <?php include 'assets/php/footer.php';?>
+
+</body>
+
+</html>

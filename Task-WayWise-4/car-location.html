@@ -1,0 +1,339 @@
+<?php
+require_once 'assets/php/session.php'; // Include the session file first
+
+require_once 'db_connection.php'; // Include the database connection file
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_location'])) {
+    $user_id = $_SESSION['user_id'] ?? null; // Initialize user_id from session if available
+    $car_id = $_SESSION['car_id'] ?? null; // Initialize car_id from session if available
+
+    if ($user_id === null || $car_id === null) {
+        die("Error: User ID or Car ID not found in session.");
+    }
+
+    $location = $_POST['autocomplete'];
+
+    try {
+        $pdo->beginTransaction();
+
+        // Update the current step in the form_progress table
+        $sql_progress = "UPDATE form_progress SET current_step = :current_step WHERE user_id = :user_id AND car_id = :car_id";
+        $stmt_progress = $pdo->prepare($sql_progress);
+        $current_step = 3; // Assuming 3 is the step for car location
+        $stmt_progress->bindParam(':current_step', $current_step);
+        $stmt_progress->bindParam(':user_id', $user_id);
+        $stmt_progress->bindParam(':car_id', $car_id);
+        $stmt_progress->execute();
+
+        // Insert location into car_locations table
+        $sql_location = "INSERT INTO car_locations (car_id, location) VALUES (:car_id, :location)";
+        $stmt_location = $pdo->prepare($sql_location);
+        $stmt_location->bindParam(':car_id', $car_id);
+        $stmt_location->bindParam(':location', $location);
+        $stmt_location->execute();
+
+        $pdo->commit();
+
+        header("Location: car-photos.php"); // Redirect to the next form page
+        exit();
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        die("ERROR: Could not execute $sql_progress or $sql_location. " . $e->getMessage());
+    }
+}
+?>
+
+<!-- <?php
+        require_once 'assets/php/session.php'; // Include the session file first
+
+        require_once 'db_connection.php'; // Include the database connection file
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_location'])) {
+            $user_id = $_SESSION['user_id'] ?? null; // Initialize user_id from session if available
+            $car_id = $_SESSION['car_id'] ?? null; // Initialize car_id from session if available
+
+            if ($user_id === null || $car_id === null) {
+                die("Error: User ID or Car ID not found in session.");
+            }
+
+            $location = $_POST['autocomplete'];
+
+            try {
+                $pdo->beginTransaction();
+
+                // Update the current step in the form_progress table
+                $sql_progress = "UPDATE form_progress SET current_step = :current_step WHERE user_id = :user_id AND car_id = :car_id";
+                $stmt_progress = $pdo->prepare($sql_progress);
+                $current_step = 3; // Assuming 3 is the step for car location
+                $stmt_progress->bindParam(':current_step', $current_step);
+                $stmt_progress->bindParam(':user_id', $user_id);
+                $stmt_progress->bindParam(':car_id', $car_id);
+                $stmt_progress->execute();
+
+                // Insert location into car_locations table
+                $sql_location = "INSERT INTO car_locations (car_id, location) VALUES (:car_id, :location)";
+                $stmt_location = $pdo->prepare($sql_location);
+                $stmt_location->bindParam(':car_id', $car_id);
+                $stmt_location->bindParam(':location', $location);
+                $stmt_location->execute();
+
+                $pdo->commit();
+
+                header("Location: car-photos.php"); // Redirect to the next form page
+                exit();
+            } catch (PDOException $e) {
+                $pdo->rollBack();
+                die("ERROR: Could not execute $sql_progress or $sql_location. " . $e->getMessage());
+            }
+        }
+        ?> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Location - WayWise</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://kit.fontawesome.com/60d8b723d0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="icon" type="image/x-icon" href="assets/img/fevicon.png">
+    <style>
+        .form-h {
+            height: 100vh;
+            width: 100vw;
+            background-image: url(/assets/img/bg5.png);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .host-form {
+            height: auto;
+            width: 60vw;
+            background-color: white;
+            color: black;
+            border-radius: 25px;
+            padding-left: 70px;
+            padding-right: 70px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            margin: auto;
+        
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ai {
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        .progress-stage {
+  width: 40%; /* Adjust width as needed */
+  height: 100%;
+  background-color: black;
+  /* border-radius: 5px; */
+}
+
+        .ai-1 {
+            display: flex;
+        }
+
+        .input-row {
+            width: 100%;
+            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .ai-2 {
+            justify-content: end;
+            align-items: end;
+            display: flex;
+        }
+
+        .h2_ {
+            width: 100% !important;
+            /* padding-left: 40px !important; */
+        }
+
+        @media screen and (max-width: 480px) {
+            .host-form {
+                padding-top: 20px !important;
+                padding-bottom: 20px !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                width: -webkit-fill-available !important;
+            }
+
+            .input-row input {
+                width: 90% !important;
+                font-size: 15px;
+            }
+
+            .form-h {
+                align-items: baseline !important;
+            }
+
+            .h2_ {
+                /* margin-left: 0px !important; */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <?php include 'assets/php/header.php'; ?>
+
+    <!--------------header ends here-->
+
+    <!-------Host form-->
+
+    <div class="form-h">
+        <center>
+            <form action="" method="post">
+                <div class="host-form">
+
+                    <div class="ai">
+                        <div class="ai-1">
+                            <h2 align="left" class="h2_">Location</h2>
+                            <p align="left" class="steps_line">5 of 6 steps | Next: Setup Payouts</p>
+                            <div class="progress-bar">
+                                <div class="progress-stage"></div>
+                                <div class="progress-stage progress-stage--rounded"></div>
+                                <!-- <div class="progress-stage"></div>
+                    <div class="progress-stage"></div>
+                    <div class="progress-stage"></div> -->
+                            </div>
+
+                            <div align="left" class="input-row inputr_">
+                                <p align="left" class="light-grey">Please provide the location where your car is parked
+                                    or where it can be picked up from.</p>
+                                <!-- <br> -->
+                                <div align="left" class="input-row">
+                                    <label id="label_add" for="autocomplete">ADDRESS</label>
+                                    <div style="display: flex; flex-direction: row; gap: 10px;align-items: center;">
+                                        <p id="selAdd" align="left" >Start typing your address</p>
+                                        <a align="left" id="editButton" onclick="editAddress()" style="display: none; cursor: pointer;"><svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+                                                <title />
+
+                                                <g id="Complete">
+
+                                                    <g id="edit">
+
+                                                        <g>
+
+                                                            <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+
+                                                            <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+
+                                                        </g>
+
+                                                    </g>
+
+                                                </g>
+
+                                            </svg></a>
+                                    </div>
+                                    <input type="text" id="autocomplete" name="autocomplete" class="hostlc">
+                                </div>
+                                <!-- <p id="selectedAddress" class="selected-address" style="display: none;"></p> -->
+
+                                <button class="go-ahead" name="submit_location">Save & Continue</button>
+                            </div>
+                        </div>
+                        <div class="ai-2">
+                            <div style="min-height: 200px; min-width: 350px;" id="map"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </center>
+    </div>
+
+    <?php include 'assets/php/footer.php'; ?>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS7u02HebXDVyM1xNx4YTTlp1yrSI9GrI&callback=initMap&libraries=places" async defer></script>
+    <script>
+        let map;
+        let geocoder;
+        let autocomplete;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 0,
+                    lng: 0
+                },
+                zoom: 10
+            });
+            geocoder = new google.maps.Geocoder();
+
+            // Initialize autocomplete after map is loaded
+            initAutocomplete();
+        }
+
+        function initAutocomplete() {
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('autocomplete'), {
+                    types: ['geocode'],
+                    componentRestrictions: {
+                        country: 'uk'
+                    }
+                });
+
+            autocomplete.setFields(['address_component', 'formatted_address']);
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            const place = autocomplete.getPlace();
+            if (!place.formatted_address) {
+                console.error("No formatted address found");
+                return;
+            }
+
+            const address = place.formatted_address;
+            document.getElementById('autocomplete').style.display = 'none'; // Hide the autocomplete input field
+            // document.getElementById('selectedAddress').innerText = address;
+            document.getElementById('selAdd').innerText = address;
+            document.getElementById('label_add').style.display = "none";
+            // Set the selected address text
+            document.getElementById('editButton').style.display = 'block'; // Show the edit button
+
+            geocodeAddress(address);
+        }
+
+        function geocodeAddress(address) {
+            geocoder.geocode({
+                'address': address
+            }, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    const marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    console.error('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        function editAddress() {
+            document.getElementById('selectedAddress').style.display = 'none'; // Hide the selected address
+            document.getElementById('autocomplete').style.display = 'block'; // Show the autocomplete input field
+            document.getElementById('editButton').style.display = 'none'; // Hide the edit button
+        }
+    </script>
+</body>
+
+</html>

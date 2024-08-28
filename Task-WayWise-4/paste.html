@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/img/fevicon.png">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <title>Enter Your Car details - WayWise</title>
+    <script src="assets/script/script.js"></script>
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <style>
+        .car-details-fetch {
+            font-weight: 600;
+        }
+
+       
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .cc {
+            flex-direction: row !important;
+        }
+
+        .host-form {
+            display: none;
+        }
+
+        .host-form.active {
+            display: block;
+        }
+
+        .form-h.show-details #vehicleForm {
+            display: none;
+        }
+
+        .form-h.show-details #vehicleDetails {
+            display: block;
+        }
+
+        /* .progress-bar {
+            display: flex;
+            margin-bottom: 20px;
+        } */
+        .progress-stage {
+  width: 10%; /* Adjust width as needed */
+  height: 100%;
+  background-color: black;
+  /* border-radius: 5px; */
+}
+
+        /* .progress-stage:last-child {
+            margin-right: 0;
+        } */
+        @media screen and (max-width: 550px) {
+            .host-form {
+                width: 100% !important;
+                height: 100% !important;
+                padding: 0px !important;
+                border-radius: 0 !important;
+                /* padding-left: 10px !important;
+                padding-right: 10px !important; */
+            }
+
+            .cc {
+                flex-direction: column !important;
+                align-items: flex-start;
+            }
+
+            .cc select {
+                width: 90% !important;
+            }
+
+            .dd {
+                width: 95% !important;
+            }
+        }
+    </style>
+    <script>
+        function fetchVehicleDetails(event) {
+            event.preventDefault();
+
+            document.getElementById('loader').style.display = 'block';
+
+            const registrationNumber = document.getElementById('registrationNumber').value;
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'api/fetch_vehicle_details.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    document.getElementById('loader').style.display = 'none';
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.errors) {
+                            document.getElementById('result').innerText = 'Wrong details, please enter the correct registration number.';
+                        } else {
+                            // Hide the form
+                            document.getElementById('vehicleForm').style.display = 'none';
+                            // Display vehicle details in input field
+                            document.getElementById('make').value = response.make;
+                            document.getElementById('fuelType').value = response.fuelType;
+                            document.getElementById('yearOfManufacture').value = response.yearOfManufacture;
+                            document.getElementById('registrationNumberDisplay').value = response.registrationNumber;
+                            // Update hidden fields
+                            document.getElementById('hiddenYearOfManufacture').value = response.yearOfManufacture;
+                            document.getElementById('hiddenRegistrationNumberDisplay').value = response.registrationNumber;
+                            // Show the details section by adding show-details class to form-h
+                            document.querySelector('.form-h').classList.add('show-details');
+                        }
+                    }
+                }
+            };
+
+            xhr.send(JSON.stringify({ registrationNumber }));
+        }
+
+        function editDetails() {
+            // Hide the details section by removing show-details class from form-h
+            document.querySelector('.form-h').classList.remove('show-details');
+            // Show the form
+            document.getElementById('vehicleForm').style.display = 'block';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.host-form').forEach(form => form.classList.add('active'));
+        });
+    </script>
+</head>
+
+<body>
+
+    <?php include 'assets/php/header.php';?>
+
+
+
+    <div class="form-h" style="display: flex; flex-direction: column;">
+        <div class="host-form" id="vehicleForm">
+            <h2 align="left">1. Car Details</h2>
+
+            <center>
+                <p align="left">Enter your Car Registration Number</p>
+                <form onsubmit="fetchVehicleDetails(event)">
+                    <div align="left" class="input-group"
+                        style="display: flex; flex-direction: row; gap: 30px; align-items: center; align-items: center;">
+                        <div class="input-row">
+                            <input style="border: 1px solid black;" class="hostli" type="text" id="registrationNumber"
+                                required>
+                        </div>
+                        <button class="search-v-btn" type="submit">Find Vehicle</button>
+                    </div>
+                </form>
+            </center>
+            <div class="loader" id="loader"></div>
+            <pre id="result"></pre>
+        </div>
+
+        <div class="host-form" id="vehicleDetails" style="height: fit-content; display: flex;">
+            <div
+                style="display: flex; justify-content: center; align-items: start; flex-direction: column; width: 65%;">
+
+            </div>
+            <form method="POST" action=""
+                style="display: flex; justify-content: center; align-items: flex-start; flex-direction: column;">
+                <div align="left" class="input-group">
+                    <div class="input-row">
+                        <h2 align="left">Car Details</h2>
+                        <p class="steps_line">1 of 6 steps | Next: Add On Details</p>
+                        <div class="progress-bar">
+                            <div class="progress-stage"></div>
+                            <div class="progress-stage progress-stage--rounded"></div>
+                            <!-- <div class="progress-stage"></div>
+                <div class="progress-stage"></div>
+                <div class="progress-stage"></div> -->
+                        </div>
+                        <div class="dd"
+                            style="display: flex; height: 50px; width: 220px; background-color: #F7D415; border-radius: 5px;">
+                            <div class="num-uk">
+                              
+                            </div>
+                            <input id="registrationNumberDisplay" name="registrationNumberDisplay" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div align="left" class="input-group">
+                    <div class="input-row">
+                        <label for="make">Make</label>
+                        <input id="make" class="car-details-fetch" name="make" type="text">
+                    </div>
+
+                    <div class="input-row">
+                        <label for="model">Car Model</label>
+                        <input id="model" class="car-details-fetch" name="model" type="text">
+                    </div>
+
+                    <div class="input-row">
+                        <label for="yearOfManufacture">Year of Manufacture</label>
+                        <input id="yearOfManufacture" class="car-details-fetch" name="yearOfManufacture" type="text"
+                            style="border-bottom: 1px solid black;">
+                    </div>
+                </div>
+
+                <div class="input-row cc action_div fuel_type" style="gap: 100px; justify-content: left;">
+                    <div class="input-row" style="width: auto;"><label for="fuelType">Fuel Type</label>
+                        <input id="fuelType" class="car-details-fetch" name="fuelType" type="text"
+                            style="border-bottom: 1px solid black;">
+                    </div>
+                    <select class="hostlc car-details-fetch" name="trans" id="transmission" style="height: auto;">
+                        <option value="automatic">Automatic</option>
+                        <option value="manual">Manual</option>
+                    </select>
+                </div>
+
+                <div class="action_div" style="align-items: center;">
+                    <!-- <div class="input-row">
+                        <label for="fuelType">Fuel Type</label>
+                        <input id="fuelType" class="car-details-fetch" type="text">
+                    </div> -->
+
+                    <a id="editButton" type="button" onclick="editDetails()">Edit</a>
+
+                    <!-- Hidden fields to ensure data is submitted -->
+                    <!-- <input type="hidden" name="yearOfManufacture" id="hiddenYearOfManufacture"> -->
+                    <!-- <input type="hidden" name="registrationNumberDisplay" id="hiddenRegistrationNumberDisplay"> -->
+                    <button type="submit"  name="submit_car_details"  class="go-ahead" onclick="showLoader()">
+                        <a href="#">Save and Continue</a>
+                        <div class="loader" id="loader"></div>
+                    </button>
+                  
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <?php include 'assets/php/footer.php';?>
+
+</body>
+
+</html>

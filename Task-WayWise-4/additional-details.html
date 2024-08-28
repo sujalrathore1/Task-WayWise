@@ -1,0 +1,226 @@
+<!-- <?php include 'assets/php/session.php';?>
+<?php
+require_once 'db_connection.php'; // Include the database connection file
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_additional_details'])) {
+    $user_id = $_SESSION['user_id']; // Assuming the user ID is stored in session
+    $car_id = $_SESSION['car_id']; // Assuming the car ID is stored in session
+
+    $features = [
+        'ac' => isset($_POST['ac']) ? 1 : 0,
+        'usb_input' => isset($_POST['usb_input']) ? 1 : 0,
+        'aux_input' => isset($_POST['aux_input']) ? 1 : 0,
+        'android_auto' => isset($_POST['android_auto']) ? 1 : 0,
+        'apple_carplay' => isset($_POST['apple_carplay']) ? 1 : 0,
+        'bluetooth' => isset($_POST['bluetooth']) ? 1 : 0,
+        'gps' => isset($_POST['gps']) ? 1 : 0,
+        'sunroof' => isset($_POST['sunroof']) ? 1 : 0,
+        'keyless_entry' => isset($_POST['keyless_entry']) ? 1 : 0,
+        'all_wheel_drive' => isset($_POST['all_wheel_drive']) ? 1 : 0,
+        'heated_seats' => isset($_POST['heated_seats']) ? 1 : 0,
+        'back_camera' => isset($_POST['back_camera']) ? 1 : 0,
+        'dashcam' => isset($_POST['dashcam']) ? 1 : 0,
+        'toll_pass' => isset($_POST['toll_pass']) ? 1 : 0,
+        'pet_friendly' => isset($_POST['pet_friendly']) ? 1 : 0,
+        'snow_tyres' => isset($_POST['snow_tyres']) ? 1 : 0,
+        'convertible' => isset($_POST['convertible']) ? 1 : 0,
+        'bike_rack' => isset($_POST['bike_rack']) ? 1 : 0,
+    ];
+
+    $description = $_POST['description'];
+
+    try {
+        $pdo->beginTransaction();
+
+        $sql = "INSERT INTO car_features (car_id, ac, usb_input, aux_input, android_auto, apple_carplay, bluetooth, gps, sunroof, keyless_entry, all_wheel_drive, heated_seats, back_camera, dashcam, toll_pass, pet_friendly, snow_tyres, convertible, bike_rack, description) VALUES (:car_id, :ac, :usb_input, :aux_input, :android_auto, :apple_carplay, :bluetooth, :gps, :sunroof, :keyless_entry, :all_wheel_drive, :heated_seats, :back_camera, :dashcam, :toll_pass, :pet_friendly, :snow_tyres, :convertible, :bike_rack, :description)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':car_id', $car_id);
+        foreach ($features as $feature => $value) {
+            $stmt->bindValue(':' . $feature, $value);
+        }
+        $stmt->bindParam(':description', $description);
+        $stmt->execute();
+
+        // Update the current step to 3
+        $sql = "UPDATE form_progress SET current_step = 2 WHERE user_id = :user_id AND car_id = :car_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':car_id', $car_id);
+        $stmt->execute();
+
+        $pdo->commit();
+
+        header("Location: car-location.php"); // Redirect to the next form page
+        exit();
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        die("ERROR: Could not execute $sql. " . $e->getMessage());
+    }
+}
+?> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Details - WayWise</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://kit.fontawesome.com/60d8b723d0.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="assets/img/fevicon.png">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .input-row {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .progress-stage {
+  width: 17%; /* Adjust width as needed */
+  height: 100%;
+  background-color: black;
+  /* border-radius: 5px; */
+}
+
+        .adonsc {
+            max-width: auto;
+            /* width: 100%; */
+        }
+
+        @media screen and (max-width: 1025px) {
+            .input-row input {
+                width: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <?php include 'assets/php/header.php';?> -->
+
+    <!--------------header ends here-->
+
+    <!-------Host form-->
+
+    <div class="form-i">
+        <center>
+            <form method="POST" action="">
+                <div class="adonsc" style="background-color: white; color: black;">
+                    <h2 align="left">Additional Details</h2>
+                    <p align="left" class="steps_line">2 of 6 steps | Next: Setup Price</p>
+                    <div class="progress-bar">
+                        <div class="progress-stage"></div>
+                        <div class="progress-stage progress-stage--rounded"></div>
+                        <!-- <div class="progress-stage"></div>
+            <div class="progress-stage"></div>
+            <div class="progress-stage"></div> -->
+                    </div>
+                    <h3 align="left">Features</h3>
+                    <p class="light-grey" align="left">Please tick the features your car is equipped with!</p> <br>
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <div class="input-row">
+                            <input type="checkbox" id="ac" name="ac" value="1">
+                            <label for="ac">A/C</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="usb_input" name="usb_input" value="1">
+                            <label for="usb_input">USB Input</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="aux_input" name="aux_input" value="1">
+                            <label for="aux_input">AUX Input</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="android_auto" name="android_auto" value="1">
+                            <label for="android_auto">Android Auto</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="apple_carplay" name="apple_carplay" value="1">
+                            <label for="apple_carplay">Apple CarPlay</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="bluetooth" name="bluetooth" value="1">
+                            <label for="bluetooth">Bluetooth</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="gps" name="gps" value="1">
+                            <label for="gps">GPS</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="sunroof" name="sunroof" value="1">
+                            <label for="sunroof">Sunroof</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="keyless_entry" name="keyless_entry" value="1">
+                            <label for="keyless_entry">Keyless Entry</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="all_wheel_drive" name="all_wheel_drive" value="1">
+                            <label for="all_wheel_drive">All wheel drive</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="heated_seats" name="heated_seats" value="1">
+                            <label for="heated_seats">Heated Seats</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="back_camera" name="back_camera" value="1">
+                            <label for="back_camera">Back Camera</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="dashcam" name="dashcam" value="1">
+                            <label for="dashcam">DashCam</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="toll_pass" name="toll_pass" value="1">
+                            <label for="toll_pass">Toll Pass</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="pet_friendly" name="pet_friendly" value="1">
+                            <label for="pet_friendly">Pet friendly</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="snow_tyres" name="snow_tyres" value="1">
+                            <label for="snow_tyres">Snow tyres or chains</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="convertible" name="convertible" value="1">
+                            <label for="convertible">Convertible</label>
+                        </div>
+                        <div class="input-row">
+                            <input type="checkbox" id="bike_rack" name="bike_rack" value="1">
+                            <label for="bike_rack">Bike rack</label>
+                        </div>
+                    </div>
+                    <h3 align="left">Description (Optional)</h3>
+                    <div class="input-group">
+                        <div class="input-row">
+                            <textarea id="carDescription" name="description"
+                                style="background-color: white; color: black; border-radius: 12px; margin-bottom: 20px;"></textarea>
+                        </div>
+                    </div>
+                    <button class="go-ahead" type="submit" name="submit_additional_details">Save and Continue</button>
+                </div>
+            </form>
+        </center>
+    </div>
+
+    <?php include 'assets/php/footer.php';?>
+
+</body>
+
+</html>
